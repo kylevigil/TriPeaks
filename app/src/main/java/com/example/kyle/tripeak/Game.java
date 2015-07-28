@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+//test commit
 
 public class Game extends ActionBarActivity {
     private int UNDO_MOVES = 100;
