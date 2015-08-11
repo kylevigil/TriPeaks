@@ -4,7 +4,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.example.kyle.tripeak.HowToPlay">
+    tools:context="com.example.kyle.tripeak.HowToPlay"
+    android:background="@android:color/darker_gray">
 
 
     <TextView
@@ -15,7 +16,8 @@
         android:id="@+id/textView2"
         android:textSize="40dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        style="@style/shadow" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -25,5 +27,6 @@
         android:id="@+id/textView3"
         android:layout_below="@+id/textView2"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="43dp" />
+        android:layout_marginTop="43dp"
+        android:textColor="@android:color/black" />
 </RelativeLayout>
