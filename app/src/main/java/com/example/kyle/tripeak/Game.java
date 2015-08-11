@@ -15,30 +15,42 @@ import java.util.ArrayList;
 //test commit
 
 public class Game extends ActionBarActivity {
-    private int UNDO_MOVES = 100;
-
-    private Deck deck = new Deck();
-    private Dealt dealt = new Dealt();
-    private ArrayList<Card> discard = new ArrayList<>();
-    private ArrayList<ImageView> clickedOrder = new ArrayList<>();
-    private ArrayList<ImageView> hintsOrder = new ArrayList<>();
-    private ArrayList<Card> deckDiscard = new ArrayList<>();
-    private int wins, cardsLeft;
-    private boolean lastClickDeck;
-    private ArrayList<ImageView> cards = new ArrayList<>();
-    private ArrayList<ImageView> hints = new ArrayList<>();
+    private int undoMoves;
+    private Deck deck;
+    private Dealt dealt;
+    private ArrayList<Card> discard;
+    private ArrayList<ImageView> clickedOrder;
+    private ArrayList<ImageView> hintsOrder;
+    private ArrayList<Card> deckDiscard;
+    //private int wins, cardsLeft;
+    private ArrayList<ImageView> cards;
+    private ArrayList<ImageView> hints;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        discard = new ArrayList<>();
+        clickedOrder = new ArrayList<>();
+        hintsOrder = new ArrayList<>();
+        deckDiscard = new ArrayList<>();
+        cards = new ArrayList<>();
+        hints = new ArrayList<>();
+        startGame();
+    }
+
+    private void startGame(){
+        clearDecks();
+        undoMoves = 5;
+        deck = new Deck();
+        dealt = new Dealt();
         dealt.start(deck);
         discard.add(deck.flip());
-        cardsLeft = 28;
-        lastClickDeck=false;
+        //cardsLeft = 28;
         addCards();
         addHints();
         checkCards();
+        ((TextView)findViewById(R.id.button4)).setText("Undo (" + undoMoves + ")");
     }
 
     private void addHints(){
@@ -106,12 +118,6 @@ public class Game extends ActionBarActivity {
     }
 
     private void checkCards(){
-        TextView undo = ((TextView) findViewById(R.id.button4));
-        undo.setText("Undo (" + UNDO_MOVES + ")");
-        if(UNDO_MOVES == 0){
-            undo.setTextColor(Color.GRAY);
-            findViewById(R.id.button4).setClickable(false);
-        }
         Card c;
         for (ImageView i : cards){
             if (i.getId() != R.id.imageViewDiscard){
@@ -252,6 +258,8 @@ public class Game extends ActionBarActivity {
                             i.setImageResource(R.drawable.sk);
                         break;
                 }
+            } else {
+                i.setImageResource(R.drawable.flipped);
             }
         }
     }
@@ -292,7 +300,6 @@ public class Game extends ActionBarActivity {
     }
 
     private void removeCard(Card clicked, ImageView i){
-        lastClickDeck=false;
         i.setVisibility(View.INVISIBLE);
         setDiscard(clicked);
 
@@ -315,7 +322,6 @@ public class Game extends ActionBarActivity {
     }
 
     public void deckClick(View v){
-        lastClickDeck=true;
         ImageView i = (ImageView)v;
         if(deck.size() > 1 ){
             flip();
@@ -344,18 +350,18 @@ public class Game extends ActionBarActivity {
                 public void onClick(View v) {
                     Game.this.setContentView(R.layout.activity_game);
                     Game.this.findViewById(R.id.button3).setVisibility(View.VISIBLE);
-                    deck = new Deck();
-                    dealt = new Dealt();
-                    dealt.start(deck);
-                    Game.this.flip();
-                    cardsLeft = 28;
-                    cards = new ArrayList<>();
-                    hints = new ArrayList<>();
-                    Game.this.addHints();
-                    Game.this.addCards();
-                    Game.this.checkCards();
+                    startGame();
                 }
             });
+    }
+
+    private void clearDecks(){
+        cards.clear();
+        hints.clear();
+        clickedOrder.clear();
+        hintsOrder.clear();
+        deckDiscard.clear();
+        discard.clear();
     }
 
     private void gameOver(){
@@ -398,8 +404,8 @@ public class Game extends ActionBarActivity {
     }
 
     public void undoClick(View view){
-        if(discard.size() != 1 && UNDO_MOVES != 0){
-            UNDO_MOVES--;
+        if(discard.size() != 1 && undoMoves != 0){
+            undoMoves--;
             if(deckDiscard.contains(topDiscard())) {
                 deck.add(discard.remove(discard.size()-1));
                 findViewById(R.id.imageViewDeck).setVisibility(View.VISIBLE);
@@ -409,6 +415,16 @@ public class Game extends ActionBarActivity {
                 cards.add(last);
                 hints.add(hintsOrder.get(hintsOrder.size()-1));
                 discard.remove(discard.size()-1);
+                Card clicked = dealt.get(Integer.parseInt(last.getContentDescription().toString()));
+                for(Card c : clicked.getCovering()){
+                    c.addCovered(clicked);
+                }
+            }
+            TextView undo = ((TextView) findViewById(R.id.button4));
+            undo.setText("Undo (" + undoMoves + ")");
+            if(undoMoves == 0){
+                undo.setTextColor(Color.GRAY);
+                findViewById(R.id.button4).setClickable(false);
             }
             checkCards();
         }

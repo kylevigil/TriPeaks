@@ -734,7 +734,7 @@
         android:layout_alignParentRight="false"
         android:layout_alignParentEnd="true"
         android:layout_centerInParent="true"
-        android:background="@color/background_material_light"
+        android:background="#ff325e39"
         android:autoText="false" />
 
     <LinearLayout

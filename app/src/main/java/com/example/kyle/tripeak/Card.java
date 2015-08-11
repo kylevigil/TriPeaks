@@ -9,8 +9,8 @@ public class Card{
    public static final int DIAMONDS = 3;
 
    private int value, suit;
-   private ArrayList<Card> covering = new ArrayList<Card>();
-   private ArrayList<Card> covered = new ArrayList<Card>();
+   private ArrayList<Card> covering = new ArrayList<>();
+   private ArrayList<Card> covered = new ArrayList<>();
 
    public Card(int value, int suit){
       this.value = value;
@@ -26,23 +26,13 @@ public class Card{
    public void removeCovered(Card c){ covered.remove(c); }
    public ArrayList<Card> getCovering(){ return covering; }
 
-   public void addCovered(Card c1, Card c2){
+   public void addCovered(Card c1, Card c2) {
       covered.add(c1);
       covered.add(c2);
    }
 
-   public String toString(){
-      switch(suit){
-         case HEARTS:
-            return value + " of hearts";
-         case SPADES:
-            return value + " of spades";
-         case CLUBS:
-            return value + " of clubs";
-         case DIAMONDS:
-            return value + " of diamonds";
-      }
-      return "Error: Value outside of normal suits value";
+   public void addCovered(Card c){
+      covered.add(c);
    }
 
    public boolean covered(){return covered.size() != 0;}
