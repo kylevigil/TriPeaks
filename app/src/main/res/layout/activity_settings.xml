@@ -7,16 +7,16 @@
     tools:context="com.example.kyle.myapplication.Settings">
 
 
-    <TextView
+    <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Test Page For Settings"
-        android:id="@+id/textView"
+        android:text="Score"
+        android:id="@+id/switch1"
+        android:checked="false"
+        android:textSize="30sp"
+        android:switchPadding="50dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="105dp"
-        android:textSize="50dp"
-        android:layout_alignParentBottom="false"
-        android:gravity="center" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>
