@@ -9,10 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import java.util.ArrayList;
-
-//test commit
 
 public class Game extends ActionBarActivity {
     private int undoMoves;
@@ -384,20 +381,18 @@ public class Game extends ActionBarActivity {
 
     public void hintClick(View view){
         ArrayList<ImageView> moves = checkForMoves();
-        final int i;
+        int i = cards.indexOf(moves.get(0));
 
-        if(moves.size()==0){
+        if(moves.size()==0)
             i = hints.indexOf(findViewById(R.id.deckhint));
-        } else {
-            i = cards.indexOf(moves.get(0));
-        }
 
         hints.get(i).setVisibility(View.VISIBLE);
         final Handler handler = new Handler();
+        final int finalI = i;
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                hints.get(i).setVisibility(View.INVISIBLE);
+                hints.get(finalI).setVisibility(View.INVISIBLE);
             }
         }, 500);
 
