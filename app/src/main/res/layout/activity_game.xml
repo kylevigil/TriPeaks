@@ -10,7 +10,7 @@
     android:minWidth="10dp"
     android:id="@+id/game"
     android:nestedScrollingEnabled="true"
-    android:background="#ff003609">
+    android:background="@color/background">
 
 
     <LinearLayout
@@ -733,7 +733,7 @@
         android:layout_alignParentRight="false"
         android:layout_alignParentEnd="true"
         android:layout_centerInParent="true"
-        android:background="#ff003609"
+        android:background="@color/background"
         android:autoText="false"
         style="@style/shadow"
         android:gravity="center" />
@@ -858,7 +858,7 @@
                 android:layout_gravity="bottom"
                 android:layout_weight=".25"
                 style="@style/Base.Widget.AppCompat.Button.Small"
-                android:background="#e300540b"
+                android:background="@color/buttonColor"
                 android:textColor="@android:color/white" />
 
             <ImageView
@@ -890,7 +890,7 @@
                 android:layout_gravity="bottom"
                 android:layout_weight=".25"
                 style="@style/Base.Widget.AppCompat.Button.Small"
-                android:background="#e300540b"
+                android:background="@color/buttonColor"
                 android:textColor="@android:color/white" />
 
         </LinearLayout>
