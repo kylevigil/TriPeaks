@@ -740,8 +740,9 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/linearLayout2"
-        android:layout_alignParentEnd="true">
+        android:id="@+id/bottomCards"
+        android:layout_alignParentEnd="true"
+        android:focusableInTouchMode="false">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -760,7 +761,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="New Game"
-                android:id="@+id/button2"
+                android:id="@+id/newGame"
                 android:layout_weight=".25"
                 android:visibility="invisible"
                 android:layout_gravity="center_vertical" />
@@ -786,7 +787,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Quit"
-                android:id="@+id/button"
+                android:id="@+id/quit"
                 android:layout_weight=".25"
                 android:visibility="invisible"
                 android:layout_gravity="center_vertical" />
@@ -799,7 +800,7 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/linearLayout8"
+        android:id="@+id/bottomButtons"
         android:layout_alignParentEnd="false" >
 
         <FrameLayout
@@ -819,7 +820,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Undo"
-                android:id="@+id/button4"
+                android:id="@+id/undo"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
                 android:layout_marginBottom="0dp"
@@ -833,7 +834,7 @@
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
-                android:id="@+id/imageView28"
+                android:id="@+id/blank"
                 android:scaleType="fitCenter"
                 android:layout_weight=".2" />
 
@@ -850,7 +851,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Hint"
-                android:id="@+id/button3"
+                android:id="@+id/hint"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"

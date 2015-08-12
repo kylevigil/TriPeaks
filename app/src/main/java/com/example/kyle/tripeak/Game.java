@@ -47,7 +47,7 @@ public class Game extends ActionBarActivity {
         addCards();
         addHints();
         checkCards();
-        ((TextView)findViewById(R.id.button4)).setText("Undo (" + undoMoves + ")");
+        ((TextView)findViewById(R.id.undo)).setText("Undo (" + undoMoves + ")");
     }
 
     private void addHints(){
@@ -313,7 +313,8 @@ public class Game extends ActionBarActivity {
         checkCards();
         if(cards.size() == 1){
             findViewById(R.id.winnerText).setVisibility(View.VISIBLE);
-            findViewById(R.id.button3).setVisibility(View.INVISIBLE);
+            findViewById(R.id.undo).setVisibility(View.INVISIBLE);
+            findViewById(R.id.hint).setVisibility(View.INVISIBLE);
             doButtons();
         }
     }
@@ -331,7 +332,7 @@ public class Game extends ActionBarActivity {
     }
 
     private void doButtons(){
-        Button quit = (Button)findViewById(R.id.button);
+        Button quit = (Button)findViewById(R.id.quit);
             quit.setVisibility(View.VISIBLE);
             quit.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -340,13 +341,13 @@ public class Game extends ActionBarActivity {
                 }
             });
 
-            Button newGame = (Button)findViewById(R.id.button2);
+            Button newGame = (Button)findViewById(R.id.newGame);
             newGame.setVisibility(View.VISIBLE);
             newGame.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Game.this.setContentView(R.layout.activity_game);
-                    Game.this.findViewById(R.id.button3).setVisibility(View.VISIBLE);
+                    Game.this.findViewById(R.id.hint).setVisibility(View.VISIBLE);
                     startGame();
                 }
             });
@@ -363,13 +364,16 @@ public class Game extends ActionBarActivity {
 
     private void gameOver(){
         if(checkForMoves().size()==0 && deck.size()==0 && cards.size() != 1){
-            findViewById(R.id.button3).setClickable(false);
+            findViewById(R.id.hint).setClickable(false);
+            findViewById(R.id.undo).setClickable(false);
+            ((TextView)findViewById(R.id.hint)).setTextColor(Color.GRAY);
+            ((TextView)findViewById(R.id.undo)).setTextColor(Color.GRAY);
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    findViewById(R.id.button3).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.button4).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.hint).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.undo).setVisibility(View.INVISIBLE);
                     TextView t = (TextView) Game.this.findViewById(R.id.winnerText);
                     t.setText("No More Moves, Game Over");
                     Game.this.findViewById(R.id.winnerText).setVisibility(View.VISIBLE);
@@ -381,18 +385,20 @@ public class Game extends ActionBarActivity {
 
     public void hintClick(View view){
         ArrayList<ImageView> moves = checkForMoves();
-        int i = cards.indexOf(moves.get(0));
+        final int i;
 
-        if(moves.size()==0)
+        if(moves.size()==0) {
             i = hints.indexOf(findViewById(R.id.deckhint));
+        } else {
+            i = cards.indexOf(moves.get(0));
+        }
 
         hints.get(i).setVisibility(View.VISIBLE);
         final Handler handler = new Handler();
-        final int finalI = i;
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                hints.get(finalI).setVisibility(View.INVISIBLE);
+                hints.get(i).setVisibility(View.INVISIBLE);
             }
         }, 500);
 
@@ -415,11 +421,11 @@ public class Game extends ActionBarActivity {
                     c.addCovered(clicked);
                 }
             }
-            TextView undo = ((TextView) findViewById(R.id.button4));
+            TextView undo = ((TextView) findViewById(R.id.undo));
             undo.setText("Undo (" + undoMoves + ")");
             if(undoMoves == 0){
                 undo.setTextColor(Color.GRAY);
-                findViewById(R.id.button4).setClickable(false);
+                findViewById(R.id.undo).setClickable(false);
             }
             checkCards();
         }
