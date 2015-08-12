@@ -4,14 +4,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
 
-public class Game extends ActionBarActivity {
+public class Game extends AppCompatActivity {
     private int undoMoves;
     private Deck deck;
     private Dealt dealt;
@@ -388,7 +388,8 @@ public class Game extends ActionBarActivity {
         final int i;
 
         if(moves.size()==0) {
-            i = hints.indexOf(findViewById(R.id.deckhint));
+            ImageView hint = (ImageView)findViewById(R.id.deckhint);
+            i = hints.indexOf(hint);
         } else {
             i = cards.indexOf(moves.get(0));
         }
