@@ -717,13 +717,15 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight=".3" />
+            android:layout_weight=".3" >
+
+        </LinearLayout>
     </LinearLayout>
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:text="Congratulations, You Won!"
+        android:text="Continue?"
         android:id="@+id/winnerText"
         android:layout_alignWithParentIfMissing="false"
         android:visibility="invisible"
@@ -806,7 +808,35 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight=".8"></FrameLayout>
+            android:layout_weight=".8">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Cards in deck: 23"
+                android:id="@+id/cardsLeft"
+                android:layout_gravity="right|bottom"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="0 Win(s)"
+                android:id="@+id/wins"
+                android:layout_gravity="left|top"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@android:style/TextAppearance.Small"
+                android:text="Score: 0"
+                android:id="@+id/score"
+                android:textColor="@android:color/white"
+                android:layout_gravity="right|top" />
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"

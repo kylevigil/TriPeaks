@@ -12,14 +12,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class Game extends AppCompatActivity {
-    private int undoMoves;
+    private int undoMoves, hintMoves;
     private Deck deck;
     private Dealt dealt;
     private ArrayList<Card> discard;
     private ArrayList<ImageView> clickedOrder;
     private ArrayList<ImageView> hintsOrder;
     private ArrayList<Card> deckDiscard;
-    //private int wins, cardsLeft;
+    private int wins, cardsLeft, score;
     private ArrayList<ImageView> cards;
     private ArrayList<ImageView> hints;
 
@@ -27,6 +27,8 @@ public class Game extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        hintMoves = 5;
+        undoMoves = 5;
         discard = new ArrayList<>();
         clickedOrder = new ArrayList<>();
         hintsOrder = new ArrayList<>();
@@ -38,16 +40,18 @@ public class Game extends AppCompatActivity {
 
     private void startGame(){
         clearDecks();
-        undoMoves = 5;
         deck = new Deck();
         dealt = new Dealt();
         dealt.start(deck);
         discard.add(deck.flip());
-        //cardsLeft = 28;
+        cardsLeft = 23;
         addCards();
         addHints();
         checkCards();
         ((TextView)findViewById(R.id.undo)).setText("Undo (" + undoMoves + ")");
+        ((TextView)findViewById(R.id.hint)).setText("Hint (" + hintMoves + ")");
+        ((TextView)findViewById(R.id.wins)).setText(wins + " Win(s)");
+        ((TextView)findViewById(R.id.score)).setText("Score: " + score);
     }
 
     private void addHints(){
@@ -297,6 +301,8 @@ public class Game extends AppCompatActivity {
     }
 
     private void removeCard(Card clicked, ImageView i){
+        score += addScore(i);
+        ((TextView)findViewById(R.id.score)).setText("Score: " + score);
         i.setVisibility(View.INVISIBLE);
         setDiscard(clicked);
 
@@ -312,15 +318,33 @@ public class Game extends AppCompatActivity {
         hintsOrder.add(hints.remove(index));
         checkCards();
         if(cards.size() == 1){
+            wins++;
             findViewById(R.id.winnerText).setVisibility(View.VISIBLE);
             findViewById(R.id.undo).setVisibility(View.INVISIBLE);
             findViewById(R.id.hint).setVisibility(View.INVISIBLE);
+            findViewById(R.id.cardsLeft).setVisibility(View.INVISIBLE);
+            ((TextView)findViewById(R.id.newGame)).setText("Yes");
+            ((TextView)findViewById(R.id.quit)).setText("No");
             doButtons();
         }
     }
 
+    private int addScore(ImageView i){
+        int x = Integer.parseInt(i.getContentDescription().toString());
+        if(x < 3){
+            return 100;
+        } else if(x < 9){
+            return 50;
+        } else if(x < 18) {
+            return 20;
+        }
+        return 10;
+    }
+
     public void deckClick(View v){
         ImageView i = (ImageView)v;
+        cardsLeft--;
+        ((TextView)findViewById(R.id.cardsLeft)).setText("Cards in deck: " + cardsLeft);
         if(deck.size() > 1 ){
             flip();
         } else {
@@ -333,24 +357,24 @@ public class Game extends AppCompatActivity {
 
     private void doButtons(){
         Button quit = (Button)findViewById(R.id.quit);
-            quit.setVisibility(View.VISIBLE);
-            quit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    NavUtils.navigateUpFromSameTask(Game.this);
-                }
-            });
+        quit.setVisibility(View.VISIBLE);
+        quit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavUtils.navigateUpFromSameTask(Game.this);
+            }
+        });
 
-            Button newGame = (Button)findViewById(R.id.newGame);
-            newGame.setVisibility(View.VISIBLE);
-            newGame.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Game.this.setContentView(R.layout.activity_game);
-                    Game.this.findViewById(R.id.hint).setVisibility(View.VISIBLE);
-                    startGame();
-                }
-            });
+        Button newGame = (Button)findViewById(R.id.newGame);
+        newGame.setVisibility(View.VISIBLE);
+        newGame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Game.this.setContentView(R.layout.activity_game);
+                Game.this.findViewById(R.id.hint).setVisibility(View.VISIBLE);
+                startGame();
+            }
+        });
     }
 
     private void clearDecks(){
@@ -372,11 +396,18 @@ public class Game extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    wins = 0;
                     findViewById(R.id.hint).setVisibility(View.INVISIBLE);
                     findViewById(R.id.undo).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.cardsLeft).setVisibility(View.INVISIBLE);
                     TextView t = (TextView) Game.this.findViewById(R.id.winnerText);
                     t.setText("No More Moves, Game Over");
                     Game.this.findViewById(R.id.winnerText).setVisibility(View.VISIBLE);
+                    ((TextView)findViewById(R.id.newGame)).setText("New Game");
+                    ((TextView)findViewById(R.id.quit)).setText("Quit");
+                    hintMoves = 5;
+                    undoMoves = 5;
+                    score = 0;
                     Game.this.doButtons();
                 }
             }, 2000);
@@ -384,24 +415,33 @@ public class Game extends AppCompatActivity {
     }
 
     public void hintClick(View view){
-        ArrayList<ImageView> moves = checkForMoves();
-        final int i;
+        if(hintMoves > 0) {
+            hintMoves--;
+            ((TextView)findViewById(R.id.hint)).setText("Hint (" + hintMoves + ")");
+            ArrayList<ImageView> moves = checkForMoves();
+            final int i;
 
-        if(moves.size()==0) {
-            ImageView hint = (ImageView)findViewById(R.id.deckhint);
-            i = hints.indexOf(hint);
-        } else {
-            i = cards.indexOf(moves.get(0));
-        }
-
-        hints.get(i).setVisibility(View.VISIBLE);
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                hints.get(i).setVisibility(View.INVISIBLE);
+            if (moves.size() == 0) {
+                ImageView hint = (ImageView) findViewById(R.id.deckhint);
+                i = hints.indexOf(hint);
+            } else {
+                i = cards.indexOf(moves.get(0));
             }
-        }, 500);
+
+            hints.get(i).setVisibility(View.VISIBLE);
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    hints.get(i).setVisibility(View.INVISIBLE);
+                }
+            }, 500);
+
+            if(hintMoves == 0){
+                ((TextView)findViewById(R.id.hint)).setTextColor(Color.GRAY);
+                findViewById(R.id.hint).setClickable(false);
+            }
+        }
 
     }
 
@@ -409,10 +449,14 @@ public class Game extends AppCompatActivity {
         if(discard.size() != 1 && undoMoves != 0){
             undoMoves--;
             if(deckDiscard.contains(topDiscard())) {
+                cardsLeft++;
+                ((TextView)findViewById(R.id.cardsLeft)).setText("Cards in deck: " + cardsLeft);
                 deck.add(discard.remove(discard.size()-1));
                 findViewById(R.id.imageViewDeck).setVisibility(View.VISIBLE);
             } else {
                 ImageView last = clickedOrder.remove(clickedOrder.size() - 1);
+                score -= addScore(last);
+                ((TextView)findViewById(R.id.score)).setText("Score: " + score);
                 last.setVisibility(View.VISIBLE);
                 cards.add(last);
                 hints.add(hintsOrder.get(hintsOrder.size()-1));
