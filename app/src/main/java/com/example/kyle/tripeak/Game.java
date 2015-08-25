@@ -1,5 +1,9 @@
 package com.example.kyle.tripeak;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,7 +16,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class Game extends AppCompatActivity {
-    private int undoMoves, hintMoves;
+    private boolean scoreVisible, hintsVisible, undoVisible, cardsVisible;
+    private int undoMoves;
     private Deck deck;
     private Dealt dealt;
     private ArrayList<Card> discard;
@@ -27,7 +32,7 @@ public class Game extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        hintMoves = 5;
+        importSettings();
         undoMoves = 5;
         discard = new ArrayList<>();
         clickedOrder = new ArrayList<>();
@@ -36,6 +41,14 @@ public class Game extends AppCompatActivity {
         cards = new ArrayList<>();
         hints = new ArrayList<>();
         startGame();
+    }
+
+    private void importSettings(){
+        SharedPreferences settings = getSharedPreferences(Settings.PREFS_NAME, 0);
+        scoreVisible = settings.getBoolean("Score",true);
+        hintsVisible = settings.getBoolean("Hints",true);
+        cardsVisible = settings.getBoolean("Cards",true);
+        undoVisible = settings.getBoolean("Undo",true);
     }
 
     private void startGame(){
@@ -48,10 +61,22 @@ public class Game extends AppCompatActivity {
         addCards();
         addHints();
         checkCards();
-        ((TextView)findViewById(R.id.undo)).setText("Undo (" + undoMoves + ")");
-        ((TextView)findViewById(R.id.hint)).setText("Hint (" + hintMoves + ")");
         ((TextView)findViewById(R.id.wins)).setText(wins + " Win(s)");
+        ((TextView)findViewById(R.id.undo)).setText("Undo (" + undoMoves + ")");
         ((TextView)findViewById(R.id.score)).setText("Score: " + score);
+
+        if(!undoVisible) {
+            findViewById(R.id.undo).setVisibility(View.INVISIBLE);
+        }
+        if(!hintsVisible) {
+            findViewById(R.id.hint).setVisibility(View.INVISIBLE);
+        }
+        if(!scoreVisible) {
+            findViewById(R.id.score).setVisibility(View.INVISIBLE);
+        }
+        if(!cardsVisible) {
+            findViewById(R.id.cardsLeft).setVisibility(View.INVISIBLE);
+        }
     }
 
     private void addHints(){
@@ -325,8 +350,30 @@ public class Game extends AppCompatActivity {
             findViewById(R.id.cardsLeft).setVisibility(View.INVISIBLE);
             ((TextView)findViewById(R.id.newGame)).setText("Yes");
             ((TextView)findViewById(R.id.quit)).setText("No");
-            doButtons();
+            doWinButtons();
         }
+    }
+
+    private void doWinButtons(){
+        Button no = (Button)findViewById(R.id.quit);
+        no.setVisibility(View.VISIBLE);
+        no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Game.this.runGameOver();
+            }
+        });
+
+        Button newGame = (Button)findViewById(R.id.newGame);
+        newGame.setVisibility(View.VISIBLE);
+        newGame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Game.this.setContentView(R.layout.activity_game);
+                Game.this.findViewById(R.id.hint).setVisibility(View.VISIBLE);
+                startGame();
+            }
+        });
     }
 
     private int addScore(ImageView i){
@@ -396,52 +443,58 @@ public class Game extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    wins = 0;
-                    findViewById(R.id.hint).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.undo).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.cardsLeft).setVisibility(View.INVISIBLE);
-                    TextView t = (TextView) Game.this.findViewById(R.id.winnerText);
-                    t.setText("No More Moves, Game Over");
-                    Game.this.findViewById(R.id.winnerText).setVisibility(View.VISIBLE);
-                    ((TextView)findViewById(R.id.newGame)).setText("New Game");
-                    ((TextView)findViewById(R.id.quit)).setText("Quit");
-                    hintMoves = 5;
-                    undoMoves = 5;
-                    score = 0;
-                    Game.this.doButtons();
+                    runGameOver();
                 }
             }, 2000);
         }
     }
 
-    public void hintClick(View view){
-        if(hintMoves > 0) {
-            hintMoves--;
-            ((TextView)findViewById(R.id.hint)).setText("Hint (" + hintMoves + ")");
-            ArrayList<ImageView> moves = checkForMoves();
-            final int i;
-
-            if (moves.size() == 0) {
-                ImageView hint = (ImageView) findViewById(R.id.deckhint);
-                i = hints.indexOf(hint);
+    public void runGameOver(){
+        SharedPreferences highScore = getSharedPreferences(Settings.PREFS_NAME,0);
+        SharedPreferences.Editor editor = highScore.edit();
+        wins = 0;
+        findViewById(R.id.hint).setVisibility(View.INVISIBLE);
+        findViewById(R.id.undo).setVisibility(View.INVISIBLE);
+        findViewById(R.id.cardsLeft).setVisibility(View.INVISIBLE);
+        TextView t = (TextView) Game.this.findViewById(R.id.winnerText);
+        if (scoreVisible) {
+            if (highScore.getInt("HighScore", 0) < score) {
+                t.setText("Congrats, \nNew High Score: " + score + "!");
+                editor.putInt("HighScore", score);
+                editor.apply();
             } else {
-                i = cards.indexOf(moves.get(0));
+                t.setText("Game Over... \nHigh Score: " + highScore.getInt("HighScore", 0));
             }
-
-            hints.get(i).setVisibility(View.VISIBLE);
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    hints.get(i).setVisibility(View.INVISIBLE);
-                }
-            }, 500);
-
-            if(hintMoves == 0){
-                ((TextView)findViewById(R.id.hint)).setTextColor(Color.GRAY);
-                findViewById(R.id.hint).setClickable(false);
-            }
+        } else {
+            t.setText("Game Over... \nNo More Moves");
         }
+        Game.this.findViewById(R.id.winnerText).setVisibility(View.VISIBLE);
+        ((TextView)findViewById(R.id.newGame)).setText("New Game");
+        ((TextView)findViewById(R.id.quit)).setText("Quit");
+        undoMoves = 5;
+        score = 0;
+        Game.this.doButtons();
+    }
+
+    public void hintClick(View view){
+        ArrayList<ImageView> moves = checkForMoves();
+        final int i;
+
+        if (moves.size() == 0) {
+            ImageView hint = (ImageView) findViewById(R.id.deckhint);
+            i = hints.indexOf(hint);
+        } else {
+            i = cards.indexOf(moves.get(0));
+        }
+
+        hints.get(i).setVisibility(View.VISIBLE);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                hints.get(i).setVisibility(View.INVISIBLE);
+            }
+        }, 500);
 
     }
 
@@ -489,5 +542,28 @@ public class Game extends AppCompatActivity {
     }
 
     public void setDiscard(Card c){ discard.add(c); }
+
+    @Override
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(Game.this);
+        builder.setMessage("Are you sure you want to quit? Progress will be lost.");
+        builder.setCancelable(true);
+        builder.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                NavUtils.navigateUpFromSameTask(Game.this);
+                dialog.cancel();
+            }
+        });
+        builder.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alert11 = builder.create();
+        alert11.show();
+    }
 
 }

@@ -26,7 +26,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Cards Left"
-        android:id="@+id/switch1"
+        android:id="@+id/Cards"
         android:checked="true"
         android:textSize="30sp"
         android:switchPadding="50dp"
@@ -40,12 +40,12 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Hints"
-        android:id="@+id/switch2"
+        android:id="@+id/Hints"
         android:checked="true"
         android:textSize="30sp"
         android:switchPadding="50dp"
         android:paddingBottom="15dp"
-        android:layout_below="@+id/switch1"
+        android:layout_below="@+id/Cards"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         style="@style/shadow" />
@@ -54,12 +54,12 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Undo"
-        android:id="@+id/switch3"
+        android:id="@+id/Undo"
         android:checked="true"
         android:textSize="30sp"
         android:switchPadding="50dp"
         android:paddingBottom="15dp"
-        android:layout_below="@+id/switch2"
+        android:layout_below="@+id/Hints"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         style="@style/shadow" />
@@ -70,7 +70,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Background Color:"
         android:id="@+id/textView"
-        android:layout_below="@+id/switch3"
+        android:layout_below="@+id/Undo"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         style="@style/shadow"
@@ -81,7 +81,8 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/textView"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:id="@+id/relativeLayout">
 
         <RadioGroup
             android:layout_width="match_parent"
@@ -99,7 +100,8 @@
                 android:checked="false"
                 android:textColor="@android:color/white"
                 android:background="#280003"
-                android:layout_marginBottom="5dp" />
+                android:layout_marginBottom="5dp"
+                android:onClick="onRadioButtonClicked" />
 
             <RadioButton
                 android:layout_width="fill_parent"
@@ -109,7 +111,8 @@
                 android:checked="false"
                 android:textColor="@android:color/white"
                 android:background="#06112C"
-                android:layout_marginBottom="5dp" />
+                android:layout_marginBottom="5dp"
+                android:onClick="onRadioButtonClicked" />
 
             <RadioButton
                 android:layout_width="fill_parent"
@@ -119,7 +122,8 @@
                 android:checked="true"
                 android:background="#ff003609"
                 android:textColor="@android:color/white"
-                android:layout_marginBottom="5dp" />
+                android:layout_marginBottom="5dp"
+                android:onClick="onRadioButtonClicked" />
 
             <RadioButton
                 android:layout_width="fill_parent"
@@ -129,7 +133,8 @@
                 android:checked="false"
                 android:textColor="@android:color/white"
                 android:background="#1C042C"
-                android:layout_marginBottom="5dp" />
+                android:layout_marginBottom="5dp"
+                android:onClick="onRadioButtonClicked" />
 
             <RadioButton
                 android:layout_width="fill_parent"
@@ -139,8 +144,22 @@
                 android:checked="false"
                 android:textColor="@android:color/white"
                 android:background="@android:color/black"
-                android:layout_marginBottom="5dp" />
+                android:layout_marginBottom="5dp"
+                android:onClick="onRadioButtonClicked" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Reset High Score"
+                android:id="@+id/reset"
+                android:layout_alignParentBottom="false"
+                android:layout_alignParentLeft="false"
+                android:layout_alignParentStart="true"
+                android:background="@android:color/white"
+                android:layout_marginTop="20dp"
+                android:onClick="reset" />
         </RadioGroup>
+
     </RelativeLayout>
 
 </RelativeLayout>

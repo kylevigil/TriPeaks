@@ -85,7 +85,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="App by Kyle Vigil"
+        android:text="App by Kyle V."
         android:id="@+id/textView4"
         android:layout_alignParentBottom="true" />
 
