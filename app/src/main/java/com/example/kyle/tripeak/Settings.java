@@ -15,7 +15,7 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.ToggleButton;
 
-
+//test commit
 public class Settings extends AppCompatActivity {
     public static final String PREFS_NAME = "MyPrefsFile";
     public static final int RED = R.id.red;
