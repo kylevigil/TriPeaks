@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class Game extends AppCompatActivity {
     private boolean scoreVisible, hintsVisible, undoVisible, cardsVisible;
-    private int undoMoves;
+    private int undoMoves, hintsIndex;
     private Deck deck;
     private Dealt dealt;
     private ArrayList<Card> discard;
@@ -32,7 +32,8 @@ public class Game extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         importSettings();
-        undoMoves = 500;
+        hintsIndex=0;
+        undoMoves = 5;
         discard = new ArrayList<>();
         clickedOrder = new ArrayList<>();
         hintsOrder = new ArrayList<>();
@@ -176,6 +177,7 @@ public class Game extends AppCompatActivity {
     }
 
     private void checkCards(){
+        hintsIndex=0;
         for(ImageView hint : hints){
             hint.setVisibility(View.INVISIBLE);
         }
@@ -488,7 +490,7 @@ public class Game extends AppCompatActivity {
     }
 
     public void runGameOver(){
-        SharedPreferences highScore = getSharedPreferences(Settings.PREFS_NAME,0);
+        SharedPreferences highScore = getSharedPreferences(Settings.PREFS_NAME, 0);
         SharedPreferences.Editor editor = highScore.edit();
         wins = 0;
         findViewById(R.id.hint).setVisibility(View.INVISIBLE);
@@ -516,24 +518,22 @@ public class Game extends AppCompatActivity {
 
     public void hintClick(View view){
         ArrayList<ImageView> moves = checkForMoves();
-        final ImageView i;
-
-        if (moves.size() == 0) {
-            i = (ImageView)findViewById(R.id.deckhint);
+        if(moves.size()==0){
+            findViewById(R.id.deckhint).setVisibility(View.VISIBLE);
+        } else if (moves.size()==1) {
+            (hints.get(cards.indexOf(moves.get(hintsIndex)))).setVisibility(View.VISIBLE);
         } else {
-            i = hints.get(cards.indexOf(moves.get(moves.size()-1)));
-        }
-
-        i.setVisibility(View.VISIBLE);
-        Runnable mMyRunnable = new Runnable() {
-            @Override
-            public void run() {
-                i.setVisibility(View.INVISIBLE);
+            if (hintsIndex != 0) {
+                (hints.get(cards.indexOf(moves.get(hintsIndex - 1)))).setVisibility(View.INVISIBLE);
+            } else {
+                (hints.get(cards.indexOf(moves.get(moves.size() - 1)))).setVisibility(View.INVISIBLE);
             }
-        };
-
-        Handler myHandler = new Handler();
-        myHandler.postDelayed(mMyRunnable, 1000);
+            (hints.get(cards.indexOf(moves.get(hintsIndex)))).setVisibility(View.VISIBLE);
+            hintsIndex++;
+            if (hintsIndex == moves.size()) {
+                hintsIndex = 0;
+            }
+        }
     }
 
     public void undoClick(View view) {
