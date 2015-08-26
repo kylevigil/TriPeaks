@@ -5,11 +5,9 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "com.example.kyle.tripeak"
-        minSdkVersion 15
+        applicationId "com.kvapps.kyle.tripeak"
+        minSdkVersion 17
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
     }
     buildTypes {
         release {

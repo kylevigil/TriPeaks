@@ -1,10 +1,9 @@
-package com.example.kyle.tripeak;
+package com.kvapps.kyle.tripeaks;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,9 +12,7 @@ import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
-import android.widget.ToggleButton;
 
-//test commit
 public class Settings extends AppCompatActivity {
     public static final String PREFS_NAME = "MyPrefsFile";
     public static final int RED = R.id.red;

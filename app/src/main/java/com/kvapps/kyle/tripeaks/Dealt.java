@@ -1,10 +1,10 @@
-package com.example.kyle.tripeak;
+package com.kvapps.kyle.tripeaks;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Dealt implements Iterable<Card>{
-   private ArrayList<Card> dealt = new ArrayList<Card>();
+   private ArrayList<Card> dealt = new ArrayList<>();
 
    public void start(Deck deck){
       for(int i=0; i<28; i++){

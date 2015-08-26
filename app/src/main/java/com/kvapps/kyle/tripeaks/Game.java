@@ -1,4 +1,4 @@
-package com.example.kyle.tripeak;
+package com.kvapps.kyle.tripeaks;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -48,6 +48,39 @@ public class Game extends AppCompatActivity {
         hintsVisible = settings.getBoolean("Hints",true);
         cardsVisible = settings.getBoolean("Cards",true);
         undoVisible = settings.getBoolean("Undo",true);
+        switch (settings.getInt("Background",Settings.GREEN)){
+            case Settings.GREEN:
+                findViewById(R.id.game).setBackgroundColor(getResources().getColor(R.color.green));
+                findViewById(R.id.winnerText).setBackgroundColor(getResources().getColor(R.color.green));
+                findViewById(R.id.undo).setBackgroundColor(getResources().getColor(R.color.greenButton));
+                findViewById(R.id.hint).setBackgroundColor(getResources().getColor(R.color.greenButton));
+                break;
+            case Settings.RED:
+                findViewById(R.id.game).setBackgroundColor(getResources().getColor(R.color.red));
+                findViewById(R.id.winnerText).setBackgroundColor(getResources().getColor(R.color.red));
+                findViewById(R.id.undo).setBackgroundColor(getResources().getColor(R.color.redButton));
+                findViewById(R.id.hint).setBackgroundColor(getResources().getColor(R.color.redButton));
+                break;
+            case Settings.BLACK:
+                findViewById(R.id.game).setBackgroundColor(getResources().getColor(R.color.black));
+                findViewById(R.id.winnerText).setBackgroundColor(getResources().getColor(R.color.black));
+                findViewById(R.id.undo).setBackgroundColor(getResources().getColor(R.color.blackButton));
+                findViewById(R.id.hint).setBackgroundColor(getResources().getColor(R.color.blackButton));
+                break;
+            case Settings.BLUE:
+                findViewById(R.id.game).setBackgroundColor(getResources().getColor(R.color.blue));
+                findViewById(R.id.winnerText).setBackgroundColor(getResources().getColor(R.color.blue));
+                findViewById(R.id.undo).setBackgroundColor(getResources().getColor(R.color.blueButton));
+                findViewById(R.id.hint).setBackgroundColor(getResources().getColor(R.color.blueButton));
+                break;
+            case Settings.PURPLE:
+                findViewById(R.id.game).setBackgroundColor(getResources().getColor(R.color.purple));
+                findViewById(R.id.winnerText).setBackgroundColor(getResources().getColor(R.color.purple));
+                findViewById(R.id.undo).setBackgroundColor(getResources().getColor(R.color.purpleButton));
+                findViewById(R.id.hint).setBackgroundColor(getResources().getColor(R.color.purpleButton));
+                break;
+        }
+
     }
 
     private void startGame(){
@@ -370,6 +403,7 @@ public class Game extends AppCompatActivity {
             public void onClick(View v) {
                 Game.this.setContentView(R.layout.activity_game);
                 Game.this.findViewById(R.id.hint).setVisibility(View.VISIBLE);
+                importSettings();
                 startGame();
             }
         });
@@ -418,6 +452,7 @@ public class Game extends AppCompatActivity {
             public void onClick(View v) {
                 Game.this.setContentView(R.layout.activity_game);
                 Game.this.findViewById(R.id.hint).setVisibility(View.VISIBLE);
+                importSettings();
                 startGame();
             }
         });
@@ -475,7 +510,8 @@ public class Game extends AppCompatActivity {
         Game.this.doButtons();
     }
 
-    public void hintClick(View view){
+    public void hintClick(final View view){
+        view.setClickable(false);
         ArrayList<ImageView> moves = checkForMoves();
         final int i;
 
@@ -487,20 +523,22 @@ public class Game extends AppCompatActivity {
         }
 
         hints.get(i).setVisibility(View.VISIBLE);
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        Runnable mMyRunnable = new Runnable() {
             @Override
             public void run() {
                 hints.get(i).setVisibility(View.INVISIBLE);
+                view.setClickable(true);
             }
-        }, 500);
+        };
 
+        Handler myHandler = new Handler();
+        myHandler.postDelayed(mMyRunnable, 1000);
     }
 
-    public void undoClick(View view){
-        if(discard.size() != 1 && undoMoves != 0){
+    public void undoClick(View view) {
+        if (discard.size() != 1 && undoMoves != 0) {
             undoMoves--;
-            if(deckDiscard.contains(topDiscard())) {
+            if (deckDiscard.contains(topDiscard())) {
                 cardsLeft++;
                 ((TextView)findViewById(R.id.cardsLeft)).setText("Cards in deck: " + cardsLeft);
                 deck.add(discard.remove(discard.size()-1));

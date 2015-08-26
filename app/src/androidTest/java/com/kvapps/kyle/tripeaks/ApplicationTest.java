@@ -1,4 +1,4 @@
-package com.example.kyle.tripeak;
+package com.kvapps.kyle.tripeaks;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
