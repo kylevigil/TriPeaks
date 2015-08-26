@@ -32,7 +32,7 @@ public class Game extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         importSettings();
-        undoMoves = 5;
+        undoMoves = 500;
         discard = new ArrayList<>();
         clickedOrder = new ArrayList<>();
         hintsOrder = new ArrayList<>();
@@ -176,6 +176,12 @@ public class Game extends AppCompatActivity {
     }
 
     private void checkCards(){
+        for(ImageView hint : hints){
+            hint.setVisibility(View.INVISIBLE);
+        }
+        for(ImageView hint1 : hintsOrder){
+            hint1.setVisibility(View.INVISIBLE);
+        }
         Card c;
         for (ImageView i : cards){
             if (i.getId() != R.id.imageViewDiscard){
@@ -369,10 +375,8 @@ public class Game extends AppCompatActivity {
 
         int index = cards.indexOf(i);
         clickedOrder.add(cards.remove(index));
-        for(ImageView hint : hints){
-            hint.setVisibility(View.INVISIBLE);
-        }
         hintsOrder.add(hints.remove(index));
+
         checkCards();
         if(cards.size() == 1){
             wins++;
@@ -510,24 +514,21 @@ public class Game extends AppCompatActivity {
         Game.this.doButtons();
     }
 
-    public void hintClick(final View view){
-        view.setClickable(false);
+    public void hintClick(View view){
         ArrayList<ImageView> moves = checkForMoves();
-        final int i;
+        final ImageView i;
 
         if (moves.size() == 0) {
-            ImageView hint = (ImageView) findViewById(R.id.deckhint);
-            i = hints.indexOf(hint);
+            i = (ImageView)findViewById(R.id.deckhint);
         } else {
-            i = cards.indexOf(moves.get(0));
+            i = hints.get(cards.indexOf(moves.get(moves.size()-1)));
         }
 
-        hints.get(i).setVisibility(View.VISIBLE);
+        i.setVisibility(View.VISIBLE);
         Runnable mMyRunnable = new Runnable() {
             @Override
             public void run() {
-                hints.get(i).setVisibility(View.INVISIBLE);
-                view.setClickable(true);
+                i.setVisibility(View.INVISIBLE);
             }
         };
 
@@ -549,7 +550,7 @@ public class Game extends AppCompatActivity {
                 ((TextView)findViewById(R.id.score)).setText("Score: " + score);
                 last.setVisibility(View.VISIBLE);
                 cards.add(last);
-                hints.add(hintsOrder.get(hintsOrder.size()-1));
+                hints.add(hintsOrder.remove(hintsOrder.size()-1));
                 discard.remove(discard.size()-1);
                 Card clicked = dealt.get(Integer.parseInt(last.getContentDescription().toString()));
                 for(Card c : clicked.getCovering()){
