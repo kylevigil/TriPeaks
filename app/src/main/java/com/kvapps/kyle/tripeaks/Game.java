@@ -51,32 +51,32 @@ public class Game extends AppCompatActivity {
         undoVisible = settings.getBoolean("Undo",true);
         switch (settings.getInt("Background",Settings.GREEN)){
             case Settings.GREEN:
-                findViewById(R.id.game).setBackgroundColor(getResources().getColor(R.color.green));
-                findViewById(R.id.winnerText).setBackgroundColor(getResources().getColor(R.color.green));
+                findViewById(R.id.game).setBackgroundResource(R.drawable.greenbackground);
+                findViewById(R.id.winnerText).setBackgroundResource(R.drawable.greenbackground);
                 findViewById(R.id.undo).setBackgroundColor(getResources().getColor(R.color.greenButton));
                 findViewById(R.id.hint).setBackgroundColor(getResources().getColor(R.color.greenButton));
                 break;
             case Settings.RED:
-                findViewById(R.id.game).setBackgroundColor(getResources().getColor(R.color.red));
-                findViewById(R.id.winnerText).setBackgroundColor(getResources().getColor(R.color.red));
+                findViewById(R.id.game).setBackgroundResource(R.drawable.redbackground);
+                findViewById(R.id.winnerText).setBackgroundResource(R.drawable.redbackground);
                 findViewById(R.id.undo).setBackgroundColor(getResources().getColor(R.color.redButton));
                 findViewById(R.id.hint).setBackgroundColor(getResources().getColor(R.color.redButton));
                 break;
             case Settings.BLACK:
-                findViewById(R.id.game).setBackgroundColor(getResources().getColor(R.color.black));
-                findViewById(R.id.winnerText).setBackgroundColor(getResources().getColor(R.color.black));
+                findViewById(R.id.game).setBackgroundResource(R.drawable.blackbackground);
+                findViewById(R.id.winnerText).setBackgroundResource(R.drawable.blackbackground);
                 findViewById(R.id.undo).setBackgroundColor(getResources().getColor(R.color.blackButton));
                 findViewById(R.id.hint).setBackgroundColor(getResources().getColor(R.color.blackButton));
                 break;
             case Settings.BLUE:
-                findViewById(R.id.game).setBackgroundColor(getResources().getColor(R.color.blue));
-                findViewById(R.id.winnerText).setBackgroundColor(getResources().getColor(R.color.blue));
+                findViewById(R.id.game).setBackgroundResource(R.drawable.bluebackground);
+                findViewById(R.id.winnerText).setBackgroundResource(R.drawable.bluebackground);
                 findViewById(R.id.undo).setBackgroundColor(getResources().getColor(R.color.blueButton));
                 findViewById(R.id.hint).setBackgroundColor(getResources().getColor(R.color.blueButton));
                 break;
             case Settings.PURPLE:
-                findViewById(R.id.game).setBackgroundColor(getResources().getColor(R.color.purple));
-                findViewById(R.id.winnerText).setBackgroundColor(getResources().getColor(R.color.purple));
+                findViewById(R.id.game).setBackgroundResource(R.drawable.purplebackground);
+                findViewById(R.id.winnerText).setBackgroundResource(R.drawable.purplebackground);
                 findViewById(R.id.undo).setBackgroundColor(getResources().getColor(R.color.purpleButton));
                 findViewById(R.id.hint).setBackgroundColor(getResources().getColor(R.color.purpleButton));
                 break;

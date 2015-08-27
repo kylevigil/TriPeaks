@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="blue" type="color">#ff061254</item>
-    <item name="blueButton" type="color">#ff245e90</item>
+    <item name="blueButton" type="color">#ff112bb0</item>
     <item name="purple" type="color">#ff300443</item>
-    <item name="purpleButton" type="color">#ff9840aa</item>
+    <item name="purpleButton" type="color">#ff7d15a4</item>
     <item name="orange" type="color">#FFFFBB33</item>
     <item name="red" type="color">#ff4c0003</item>
-    <item name="redButton" type="color">#ffaa0003</item>
+    <item name="redButton" type="color">#ff9b1218</item>
     <item name="darkblue" type="color">#FF0099CC</item>
     <item name="darkpurple" type="color">#FF9933CC</item>
     <item name="darkgreen" type="color">#FF669900</item>
     <item name="darkorange" type="color">#FFFF8800</item>
     <item name="darkred" type="color">#FFCC0000</item>
     <item name="green" type="color">#ff003609</item>
-    <item name="greenButton" type="color">#e300540b</item>
+    <item name="greenButton" type="color">#e3058726</item>
     <item name="black" type="color">#FF000000</item>
-    <item name="blackButton" type="color">#FF666666</item>
+    <item name="blackButton" type="color">#ff1b1b1b</item>
 
 
     <integer-array name="androidcolors">
