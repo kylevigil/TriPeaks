@@ -15,7 +15,7 @@
     <item name="green" type="color">#ff003609</item>
     <item name="greenButton" type="color">#e3058726</item>
     <item name="black" type="color">#FF000000</item>
-    <item name="blackButton" type="color">#ff1b1b1b</item>
+    <item name="blackButton" type="color">#ff616161</item>
 
 
     <integer-array name="androidcolors">

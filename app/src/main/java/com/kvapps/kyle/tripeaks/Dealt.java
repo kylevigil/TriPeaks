@@ -3,9 +3,16 @@ package com.kvapps.kyle.tripeaks;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Dealt implements Iterable<Card>{
+/**
+ * class to model the cards that have been dealt out into the tripeak formation.
+ */
+public class Dealt {
    private ArrayList<Card> dealt = new ArrayList<>();
 
+   /**
+    * Creates the doubly linked list of cards that are connected by cards they are covering and the cards they are covered by.
+    * @param deck Deck of 52 cards
+    */
    public void start(Deck deck){
       for(int i=0; i<28; i++){
          dealt.add(deck.flip());
@@ -29,11 +36,10 @@ public class Dealt implements Iterable<Card>{
       }
    }
 
-   public Iterator<Card> iterator(){
-      return dealt.iterator();
-   }
-
-   public int size(){ return dealt.size(); }
-
+   /**
+    * Getter returning the card at the specified index
+    * @param  index the index of the dealt card to return
+    * @return Card The card being asked for
+    */
    public Card get(int index){ return dealt.get(index); }
 }

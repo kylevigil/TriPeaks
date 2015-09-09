@@ -6,15 +6,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-
+/**
+ * Class to display the how to play activity
+ */
 public class HowToPlay extends AppCompatActivity {
 
+   /**
+    * Function that runs at the creation of the how to play activity
+    * @param savedInstanceState The state of the activity
+    */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_how_to_play);
     }
 
+    /**
+     * Creates the action bar
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {return true;}
 

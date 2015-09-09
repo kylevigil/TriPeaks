@@ -13,6 +13,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 
+/**
+ * Settings page accessable from the main menu.
+ * Parent is the main menu
+ */
 public class Settings extends AppCompatActivity {
     public static final String PREFS_NAME = "MyPrefsFile";
     public static final int RED = R.id.red;
@@ -24,6 +28,10 @@ public class Settings extends AppCompatActivity {
     private Switch score, cards, hints, undo;
     private RadioGroup background;
 
+    /**
+     * Function that runs on the initial creation of the activity
+     * @param savedInstanceState the saved state of the page
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +45,9 @@ public class Settings extends AppCompatActivity {
         checkToggles();
     }
 
+    /**
+     * Function to display the switches in the correct position on the initial creation of the activity
+     */
     private void setSwitches(){
         SharedPreferences settings = getSharedPreferences(PREFS_NAME,0);
 
@@ -83,6 +94,9 @@ public class Settings extends AppCompatActivity {
         }
     }
 
+    /**
+     * function to register any changes to any of the toggles of the settings
+     */
     private void checkToggles(){
         SharedPreferences settings = getSharedPreferences(PREFS_NAME,0);
         final SharedPreferences.Editor editor = settings.edit();
@@ -132,6 +146,10 @@ public class Settings extends AppCompatActivity {
         });
     }
 
+    /**
+     * function to register any changes in background selection
+     * @param view the radio group of list of backgrounds
+     */
     public void onRadioButtonClicked(View view) {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME,0);
         final SharedPreferences.Editor editor = settings.edit();
@@ -164,10 +182,12 @@ public class Settings extends AppCompatActivity {
         editor.apply();
     }
 
+    /**
+     * Creates the action bar
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.menu_, menu);
         return true;
     }
 
@@ -186,6 +206,10 @@ public class Settings extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * handles the button click of the reset highscore
+     * @param view Reset high score button
+     */
     public void reset(View view){
         AlertDialog.Builder builder1 = new AlertDialog.Builder(Settings.this);
         builder1.setMessage("Are you sure you want to reset your high score?");
