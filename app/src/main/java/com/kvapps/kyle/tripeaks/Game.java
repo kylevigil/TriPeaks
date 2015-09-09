@@ -107,8 +107,16 @@ public class Game extends Activity {
         addCards();
         addHints();
         checkCards();
+
+        TextView undo = ((TextView) findViewById(R.id.undo));
+        undo.setText("Undo (" + undoMoves + ")");
+
+        if(undoMoves == 0){
+            undo.setTextColor(Color.GRAY);
+            findViewById(R.id.undo).setClickable(false);
+        }
+
         ((TextView)findViewById(R.id.wins)).setText(wins + " Win(s)");
-        ((TextView)findViewById(R.id.undo)).setText("Undo (" + undoMoves + ")");
         ((TextView)findViewById(R.id.score)).setText("Score: " + score);
 
         //depending on settings determines if the hint, undo, score, or cards left is visible or not
